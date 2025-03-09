@@ -15,6 +15,9 @@ int main(int argc, char *argv[])
     Board.addArmy();
 
     Board.showChessboard();
+//checking move
+    Board.moveFigure(0,1,2,2);
+    Board.showChessboard();
 
     QApplication a(argc, argv);
     MainWindow w;

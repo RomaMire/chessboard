@@ -25,6 +25,10 @@ public:
 
     void showChessboard();
     void addArmy();
+
+    bool moveFigure(int startX, int startY, int endX, int endY);
+
+    bool isCheck(int kingX, int kingY, Figure* board[8][8], int team);
 };
 
 #endif // CHESSBOARD_H

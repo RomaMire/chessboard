@@ -18,7 +18,6 @@ public:
     Figure(char kind, int team);
     virtual ~Figure();
 
-
     char showKind();
 
     int showTeam();
@@ -27,9 +26,13 @@ public:
     int setPosition();
 
     void move();
-    bool isMoveValid();
+   // bool isMoveValid();
 
+    virtual bool isMoveValid(int startX, int startY, int endX, int endY, Figure* board[8][8]) = 0;  // abstract - own rules for each figure
 
+   /* virtual bool isMoveValid(int startX, int startY, int endX, int endY, Figure* board[8][8]){
+        return false;
+   }; */
 };
 
 #endif // FIGURE_H
