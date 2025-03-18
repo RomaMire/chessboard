@@ -14,10 +14,12 @@ protected:
     bool mortality {true};
     int position[0][0];
 
+    bool wasMoved = false;
+
+
 public:
     Figure(char kind, int team);
     virtual ~Figure();
-
 
     char showKind();
 
@@ -27,7 +29,20 @@ public:
     int setPosition();
 
     void move();
-    bool isMoveValid();
+
+    //castling
+    bool hasMoved();
+    void setMove();
+
+   // bool isMoveValid();
+
+    virtual bool isMoveValid(int startX, int startY, int endX, int endY, Figure* board[8][8]) = 0;  // abstract - own rules for each figure
+
+   /* virtual bool isMoveValid(int startX, int startY, int endX, int endY, Figure* board[8][8]){
+        return false;
+   }; */
+
+
 
 
 };
