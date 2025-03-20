@@ -21,6 +21,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp
 
+
 HEADERS += \
     Bishop.h \
     Chessboard.h \
@@ -44,3 +45,20 @@ macx-clang {
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    img/bbishop.png \
+    img/bking.png \
+    img/bknight.png \
+    img/bpawn.png \
+    img/bqueen.png \
+    img/brook.png \
+    img/wbishop.png \
+    img/wking.png \
+    img/wknight.png \
+    img/wpawn.png \
+    img/wqueen.png \
+    img/wrook.png
+
+RESOURCES += \
+    images.qrc
