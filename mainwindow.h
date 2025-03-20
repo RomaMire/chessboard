@@ -22,12 +22,16 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+
+
 private:
     Ui::MainWindow *ui;
 
     ////////////////////
     QGraphicsScene *scene;  //initialization of chessboard scene
 
-    void drawBoard();
+    void drawBoard();//chessboard of tailes
+
+    void addPictures(); // pictures of Figures
 };
 #endif // MAINWINDOW_H
