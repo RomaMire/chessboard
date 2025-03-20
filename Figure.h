@@ -10,23 +10,23 @@ class Figure
 protected:
 
     char kind {'*'};
-    int team {0};//0-empty 1-white 2-black
-    bool mortality {true};
-    int position[0][0];
+    int team {0};// 1-white 2-black
+
+
 
     bool wasMoved = false;
 
 
 public:
     Figure(char kind, int team);
+
     virtual ~Figure();
 
     char showKind();
 
     int showTeam();
 
-    bool setMortality();
-    int setPosition();
+
 
     void move();
 

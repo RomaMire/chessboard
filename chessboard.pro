@@ -12,7 +12,6 @@ SOURCES += \
     Bishop.cpp \
     Chessboard.cpp \
     Figure.cpp \
-    Intro.cpp \
     King.cpp \
     Knight.cpp \
     Pawn.cpp \
@@ -26,7 +25,6 @@ HEADERS += \
     Bishop.h \
     Chessboard.h \
     Figure.h \
-    Intro.h \
     King.h \
     Knight.h \
     Pawn.h \
