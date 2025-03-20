@@ -7,8 +7,14 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 ///////////////
+/// logic implementation and mouse eventhandler
+#include <QMouseEvent>
+
+#include "Chessboard.h"
+
 
 QT_BEGIN_NAMESPACE
+
 namespace Ui {
 class MainWindow;
 }
@@ -19,9 +25,11 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(Chessboard* board, QWidget *parent = nullptr);
     ~MainWindow();
 
+protected:
+    void mousePressEvent(QMouseEvent *event) override;  // mouse eventhandler
 
 
 private:
@@ -30,8 +38,25 @@ private:
     ////////////////////
     QGraphicsScene *scene;  //initialization of chessboard scene
 
+    ///eventhadler
+    Chessboard *chessboard;  // pointer to chessboard object
+
+    //try to combine with the logic ********************
+    //ChessFigure *selectedFigure = nullptr;
+
+    QGraphicsPixmapItem *selectedPiece = nullptr;
+    QPoint selectedPiecePos;
+
+
+
+
+
     void drawBoard();//chessboard of tailes
 
-    void addPictures(); // pictures of Figures
+   // void addPictures(); // pictures of Figures
+
+    void addFigures(); //taking figures from Chessboard.cpp
+
+    void updateBoard(); //grapghic actualization
 };
 #endif // MAINWINDOW_H

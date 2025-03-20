@@ -10,6 +10,8 @@ Chessboard::Chessboard(){
     }
 }
 
+
+
 Chessboard::~Chessboard(){
     for(int i =0;i<8;i++){
         for(int j=0;j<8;j++){
@@ -126,10 +128,6 @@ bool Chessboard::isKingInCheck(int team) {
                 // Check if enemy figure King is in range of attack
                 if (Board[i][j]->isMoveValid(i, j, kingX, kingY, Board) ) {
 
-
-
-
-
                     switch (team){
                     case 1:
                         std::cout<<"White king is on check - isKingOnCheck<<endl "<< Board[i][j]->showKind() << std::endl;
@@ -147,12 +145,8 @@ bool Chessboard::isKingInCheck(int team) {
                    // std::cout<<"Protect the King!"<<endl;
 
             }
-
-
             };
         }
-
-
 
 
       //cout<<"no check"<<endl;
@@ -183,8 +177,8 @@ bool Chessboard:: isCheckmate(int team){
 
     for (int i = 0; i < 8; i++) {
 
-        int newX = kingX + possibleKingMoves[i][0];  // Dodajemy zmianę w X
-        int newY = kingY + possibleKingMoves[i][1];  // Dodajemy zmianę w Y
+        int newX = kingX + possibleKingMoves[i][0];  // change in  X
+        int newY = kingY + possibleKingMoves[i][1];  // change in  Y
 
         if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8) {
             // if there is way to move
@@ -432,7 +426,12 @@ bool Chessboard::moveFigure(int startX, int startY, int endX, int endY) {
 };
 
 
+//method for GUI
 
+Figure* (*Chessboard::getBoard())[8] {
+
+    return Board;
+};
 
 
 //void Chessboard::

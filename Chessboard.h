@@ -42,6 +42,9 @@ public:
     //method for castling move
    bool isToCastle(int kingX, int kingY, int rookX, int rookY);
 
+   //method for GUI
+   Figure* (*getBoard())[8];// GUI will take and assign the figure png thank to this
+
 
 
 };
