@@ -39,13 +39,18 @@ private:
     QGraphicsScene *scene;  //initialization of chessboard scene
 
     ///eventhadler
-    Chessboard *chessboard;  // pointer to chessboard object
+    Chessboard *chessboard;  // pointer to chessboard object... mainwindow has access to chessboard
 
     //try to combine with the logic ********************
     //ChessFigure *selectedFigure = nullptr;
 
     QGraphicsPixmapItem *selectedPiece = nullptr;
     QPoint selectedPiecePos;
+
+    // a logic for moving figure - if "-" means figure is not selected
+    int selectedRow = -1;
+    int selectedCol = -1;
+    bool pieceSelected = false;
 
 
 

@@ -4,7 +4,7 @@
 Chessboard::Chessboard(){
     for(int i =0;i<8;i++){
         for(int j=0;j<8;j++){
-           // Board[i][j] = new Figure('*',0);
+
             Board[i][j] = nullptr;
         }
     }
@@ -340,6 +340,8 @@ bool Chessboard::moveFigure(int startX, int startY, int endX, int endY) {
 
         std::cout << "Enemy" << Board[endX][endY]->showKind() << " eliminated" << std::endl;
         delete Board[endX][endY];  // deleting figure of second team
+        //to eliminate problem from GUI when enemy figure is destroyed
+        Board[endX][endY] = nullptr;
     }
 
 
