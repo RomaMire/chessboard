@@ -52,9 +52,12 @@ QApplication a(argc, argv);
 
 
     MainWindow w(&Board);
+
+    Board.setLogger([&w](const QString& msg) {
+        w.log(msg);               // send logs to GUI
+    });
+
     w.show();
-
-
 
     return a.exec();
 }
