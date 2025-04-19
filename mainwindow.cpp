@@ -78,7 +78,17 @@ void MainWindow::addFigures() {
         Figure* (*board)[8] = chessboard->getBoard();  // taking the chessboard
 
 
-        //
+        //if (!board) return;
+
+        if (!board) return;
+
+        for (QGraphicsItem* item : scene->items()) {//every graphic objects iteration
+            if (item->type() == QGraphicsPixmapItem::Type) {//check if the object is a image of the figure type
+                scene->removeItem(item);//delete the figure from scene
+                delete item;// delete the figure from memory
+            }
+        }
+
         std::map<char, QString> blackFiguresMap = {
             {'P', ":/img/img/bpawn.png"}, {'R', ":/img/img/brook.png"},
             {'H', ":/img/img/bknight.png"}, {'B', ":/img/img/bbishop.png"},
@@ -133,7 +143,39 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
     int col = clickedPos.x() / 60;
     int row = clickedPos.y() / 60;
 
-    qDebug() << "Clicked the square :" << row << col;
-}
+    qDebug() << "Clicked the square :" << row << col; //show clicked position *******************
 
+
+    if (row < 0 || row >= 8 || col < 0 || col >= 8) return;
+
+    if (!pieceSelected) {
+        // selecting the figure with the first click
+        Figure* selected = chessboard->getBoard()[row][col];
+        if (selected != nullptr) {
+            selectedRow = row;
+            selectedCol = col;
+            pieceSelected = true;
+            qDebug() << "Figure selected on  (" << row << "," << col << ")";
+        } else {
+            qDebug() << "No figure to chose (" << row << "," << col << ")";
+        }
+    } else {
+        // second click - move selected figure
+        bool moved = chessboard->moveFigure(selectedRow, selectedCol, row, col);
+        if (moved) {
+            qDebug() << "Move from  (" << selectedRow << "," << selectedCol << ") to (" << row << "," << col << ")";
+            drawBoard();     // refresh the board
+            addFigures();    // refresh the figures
+        } else {
+            qDebug() << "Wrong move...";
+        }
+
+        // reset selected
+        pieceSelected = false;
+        selectedRow = -1;
+        selectedCol = -1;
+
+
+}
+}
 
