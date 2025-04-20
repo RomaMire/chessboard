@@ -28,7 +28,7 @@ public:
 
 
 
-    void move();
+    //void move();
 
     //castling
     bool hasMoved();

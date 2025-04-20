@@ -18,7 +18,8 @@ SOURCES += \
     Queen.cpp \
     Rook.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    startwindows.cpp
 
 
 HEADERS += \
@@ -30,10 +31,12 @@ HEADERS += \
     Pawn.h \
     Queen.h \
     Rook.h \
-    mainwindow.h
+    mainwindow.h \
+    startwindows.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    startwindows.ui
 
 macx-clang {
     QMAKE_APPLE_DEVICE_ARCHS = arm64
@@ -56,7 +59,8 @@ DISTFILES += \
     img/wknight.png \
     img/wpawn.png \
     img/wqueen.png \
-    img/wrook.png
+    img/wrook.png \
+    img/hero.jpg
 
 RESOURCES += \
     images.qrc

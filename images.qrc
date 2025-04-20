@@ -12,5 +12,6 @@
         <file>img/wpawn.png</file>
         <file>img/wqueen.png</file>
         <file>img/wrook.png</file>
+        <file>img/hero.jpg</file>
     </qresource>
 </RCC>

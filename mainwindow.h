@@ -12,6 +12,10 @@
 
 #include "Chessboard.h"
 
+//info bar
+#include <QTextEdit>
+
+
 
 QT_BEGIN_NAMESPACE
 
@@ -25,12 +29,27 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+
+
+
     MainWindow(Chessboard* board, QWidget *parent = nullptr);
     ~MainWindow();
 
+     void log(const QString& msg);//textConsole GUI
+
+    void confirmExit();//ask obout permision when exit the game
+     void confirmReset();
 protected:
     void mousePressEvent(QMouseEvent *event) override;  // mouse eventhandler
 
+
+private slots:
+   // void on_pushButton_clicked();
+
+    void on_closeBtn_clicked();
+
+    void on_aboutBtn_clicked();
+    void on_resetBtn_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -39,13 +58,24 @@ private:
     QGraphicsScene *scene;  //initialization of chessboard scene
 
     ///eventhadler
-    Chessboard *chessboard;  // pointer to chessboard object
+    Chessboard *chessboard;  // pointer to chessboard object... mainwindow has access to chessboard
 
     //try to combine with the logic ********************
     //ChessFigure *selectedFigure = nullptr;
 
     QGraphicsPixmapItem *selectedPiece = nullptr;
     QPoint selectedPiecePos;
+
+    // a logic for moving figure - if "-" means figure is not selected
+    int selectedRow = -1;
+    int selectedCol = -1;
+    bool pieceSelected = false;
+
+    //light selected figure
+    int highlightedRow = -1;
+    int highlightedCol = -1;
+
+    QVector<QPoint> possibleMoves;
 
 
 
@@ -58,5 +88,8 @@ private:
     void addFigures(); //taking figures from Chessboard.cpp
 
     void updateBoard(); //grapghic actualization
+
+    //info bar
+    QTextEdit* textConsole;
 };
 #endif // MAINWINDOW_H
