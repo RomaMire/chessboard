@@ -20,7 +20,7 @@ StartWindows::StartWindows(QWidget *parent)
             Qt::SmoothTransformation
             ));
     } else {
-        qDebug() << "❌ Nie udało się załadować obrazka!";
+        qDebug() << "No picture found!";
     }
 
     setWindowTitle("Chessboard C++ Project");
@@ -71,7 +71,7 @@ void StartWindows::on_aboutBtn_clicked()
     QMessageBox::about(
         this,
         "Chess Game",
-        "Chess Game \n\n Train your tactical thinking and outsmart your opponent! \n\n Remember, life is grim. Be honorable."
+        "C++ Project \nChess Game\n\n Train your tactical thinking and outsmart your opponent! \n\n\n\n Github creation proces: https://github.com/RomaMire/chessboard/branches/active \n\n Github main: https://github.com/RomaMire/chessboard\n\n\n\n\n Created by: Roman Mirek\n student id: 340 971 ."
         );
 }
 

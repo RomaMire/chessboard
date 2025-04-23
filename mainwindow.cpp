@@ -86,12 +86,12 @@ void MainWindow::drawBoard() {// creating visual chessboard - tiles of white and
             QColor baseColor = (row+ col) % 2 == 0 ? Qt::white : Qt::gray;
 
             if (row == highlightedRow && col == highlightedCol) {
-             baseColor = QColor(204, 255, 204);  // light yellow
+             baseColor = QColor(250, 250, 230);  //
             };
 
             for (const QPoint& p : possibleMoves) {
                 if (p.x() == col && p.y() == row) {
-                    baseColor = QColor(230, 255, 230);  // light green
+                    baseColor = QColor(250, 250, 220);  //
                     break;
                 }
             }
@@ -287,10 +287,11 @@ void MainWindow::confirmReset() {
     reply = QMessageBox::question(
         this,
         "Exit Game",
-        "Are you sure you want to quit the game?",
+        "Are you sure you want to reset the game?",
         QMessageBox::Yes | QMessageBox::No
         );
 
+/*
     if (reply == QMessageBox::Yes) {
         chessboard->~Chessboard();                   // delete previous gamme
         new (chessboard) Chessboard();               // create new chessboard again
@@ -298,10 +299,26 @@ void MainWindow::confirmReset() {
         drawBoard();                                 // creat board
         addFigures();                                // add figures
         log(" Game has been reset");
-    } else {
+    } else {                                         ******* reset game problem
         log("Reset canceled");
     }
-}
+*/
+
+    delete chessboard;                   // destroy previous game
+    chessboard = new Chessboard();       // create new game
+
+    chessboard->setLogger([this](const QString& msg) { // set up new logger
+        log(msg);
+
+        });
+
+    chessboard->addArmy();                   // put a figures on the board
+    drawBoard();
+    addFigures();
+
+    log( "Game has been reset - play again! ");
+
+    };
 
 
 void MainWindow::on_closeBtn_clicked()

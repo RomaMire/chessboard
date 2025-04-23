@@ -68,7 +68,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      </rect>
     </property>
     <property name="text">
-     <string>Reset Game</string>
+     <string>Play again!</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_2">
@@ -107,7 +107,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      </rect>
     </property>
     <property name="text">
-     <string>End Game</string>
+     <string>End game</string>
     </property>
    </widget>
    <widget class="QPushButton" name="aboutBtn">

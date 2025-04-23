@@ -7,6 +7,7 @@ class King : public Figure
 {
 private:
      bool wasChecked = false;
+  //  bool wasMoved = false;
 
 public:
     King(char kind, int team);
@@ -15,6 +16,9 @@ public:
     // check if king was in check - castling possibility
     bool wasInCheck();
     void setChecked();
+
+   // void setWasMoved();
+
 
     bool isMoveValid(int startX, int startY, int endX, int endY, Figure* board[8][8]) override;
 };
