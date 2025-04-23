@@ -23,6 +23,7 @@ bool King::isMoveValid(int startX, int startY, int endX, int endY, Figure* board
     return true;
 }
 
+
 //Castling
 bool King::wasInCheck() {
     return wasChecked;

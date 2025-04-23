@@ -20,6 +20,12 @@ using namespace std;
 
 class Chessboard
 {
+private:
+    int enPassantX = -1;
+    int enPassantY = -1;
+
+    int currentTurn = 1; //switch the turn
+
 protected:
     Figure* Board [8][8];
 
@@ -29,6 +35,8 @@ protected:
     using LoggerFunc = std::function<void(const QString&)>;
     LoggerFunc logger = nullptr;  // domyślnie brak
     void log(const QString& msg);//
+
+
 
 public:
     Chessboard();

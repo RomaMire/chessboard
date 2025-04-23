@@ -1,5 +1,7 @@
 #include "Chessboard.h"
 
+#include <QRandomGenerator>
+#include <QInputDialog>
 
 Chessboard::Chessboard(){
     for(int i =0;i<8;i++){
@@ -19,6 +21,10 @@ Chessboard::~Chessboard(){
         }
     }
 }
+
+
+
+
 //GUI console
 void Chessboard::setLogger(LoggerFunc func) {
     logger = func;
@@ -31,6 +37,8 @@ void Chessboard::log(const QString& msg) {
         std::cout << "[Chessboard] " << msg.toStdString() << std::endl;
     }
 }
+
+
 
 //add figures
 void Chessboard::addArmy(){
@@ -79,6 +87,9 @@ void Chessboard::addArmy(){
     Board[7][6] = new Knight('H',1);
 
     cout<<"Black and White army added"<<endl;
+
+
+
 
 }
 
@@ -183,6 +194,9 @@ bool Chessboard:: isCheckmate(int team){
     int kingY = (team == 1) ? whiteKingY : blackKingY;
 
 
+    int oldKingX = kingX;
+    int oldKingY = kingY;
+
     int possibleKingMoves[8][2] = {
         {-1, -1}, {-1, 0}, {-1, 1}, {0, -1},
         {0, 1}, {1, -1}, {1, 0}, {1, 1}
@@ -206,17 +220,31 @@ bool Chessboard:: isCheckmate(int team){
                 Board[newX][newY] = Board[kingX][kingY]; // Try to move
                 Board[kingX][kingY] = nullptr;
 
-                bool stillInCheck = isKingInCheck(team); // if King is still on check
+                if (team == 1) { //new kings position
+                    whiteKingX = newX;
+                    whiteKingY = newY;
+                } else {
+                    blackKingX = newX;
+                    blackKingY = newY;
+                }
+
+                bool stillInCheck = isKingInCheck(team, false); // if King is still on check
 
                 // move back
                 Board[kingX][kingY] = Board[newX][newY];
                 Board[newX][newY] = PlaceToMove;
 
+                if (team == 1) {
+                    whiteKingX = oldKingX;
+                    whiteKingY = oldKingY;
+                } else {
+                    blackKingX = oldKingX;
+                    blackKingY = oldKingY;
+                }
+
                 if (!stillInCheck) {
                     return false; // no mate
                 }
-
-
         }
     }
 }
@@ -236,7 +264,7 @@ for (int i = 0; i < 8; i++) {
                         Board[i][j] = nullptr;
 
 
-                        bool stillInCheck = isKingInCheck(team); // if the move can save the king
+                        bool stillInCheck = isKingInCheck(team, false); // if the move can save the king
 
                         // move back
                         Board[i][j] = Board[x][y];
@@ -244,6 +272,9 @@ for (int i = 0; i < 8; i++) {
 
                         if (!stillInCheck) {
                             return false; // no mate - there is a option for your other figure
+                        } else{
+                            std::cout<<"Check Mate"<<endl;
+                            log(" 👑 Check Mate");
                         }
                     }
                 }
@@ -252,9 +283,12 @@ for (int i = 0; i < 8; i++) {
     }
 }
 
-            std::cout<<"Check Mate"<<endl;
-            log(" 👑 Check Mate this time");
-            return true;
+
+
+std::cout<<"Check Mate  this time"<<endl;
+log(" 👑 Check Mate this time");
+
+return true;
     /// ///////////
 };
 
@@ -281,8 +315,13 @@ bool Chessboard::isToCastle(int kingX, int kingY, int rookX, int rookY){
         if (isKingInCheck(king->showTeam())) return false;
     }
 
-    return true;  // castle is possible
+
+ currentTurn = (currentTurn == 1) ? 2 : 1;
+    return true;  // castle is possible ******************************
 };
+
+
+
 
 bool Chessboard::moveFigure(int startX, int startY, int endX, int endY) {
 
@@ -295,6 +334,11 @@ bool Chessboard::moveFigure(int startX, int startY, int endX, int endY) {
     // check if place is empty before moove
     if (Board[startX][startY] == nullptr) {
         std::cout << "Empty square - no fugure to move (" << startX << ", " << startY << ")" << std::endl;
+        return false;
+    }
+
+    if (Board[startX][startY]->showTeam() != currentTurn) { //switch the turn
+        log(currentTurn == 1 ? "White's turn!" : "Black's turn!");
         return false;
     }
 
@@ -318,23 +362,27 @@ bool Chessboard::moveFigure(int startX, int startY, int endX, int endY) {
         }
     }
 
+
+
+
+    // is move correct?
+    if (!SelectedFigure->isMoveValid(startX, startY, endX, endY, Board)) {
+        std::cout << "Wrong move " << SelectedFigure->showKind() << "!" << std::endl; //not here
+        return false;
+
+    }
+
     if (SelectedFigure->showKind() == 'K') {
-        if (SelectedFigure->showTeam() == 1) {  // White King
+        if (SelectedFigure->showTeam() == 1) {  // new king position after move
             whiteKingX = endX;
             whiteKingY = endY;
         } else {  // Black King
             blackKingX = endX;
             blackKingY = endY;
-            cout<<blackKingX<<endl;
+
         }
-    }
 
-
-    // is move correct
-    if (!SelectedFigure->isMoveValid(startX, startY, endX, endY, Board)) {
-        std::cout << "Wrong move " << SelectedFigure->showKind() << "!" << std::endl;
-        return false;
-
+        SelectedFigure->setMove();
     }
 
 
@@ -342,34 +390,8 @@ bool Chessboard::moveFigure(int startX, int startY, int endX, int endY) {
 
 
 
-    // attack mode
-    if (Board[endX][endY] != nullptr) {
 
-        if (Board[endX][endY]->showKind()=='K'){
-            std::cout << "Be honorable! Can not attack King" << std::endl;
-            log("Be honorable! Can not kill the King of your enemy");
-            return false;
-        }
-
-
-        if (Board[endX][endY]->showTeam() == SelectedFigure->showTeam()) {
-            std::cout << "Be honorable! Can not attack your own team" << std::endl;
-            log("Be honorable! Can not kill the King of your enemy");
-            return false;
-        }
-
-        std::cout << "Enemy" << Board[endX][endY]->showKind() << " eliminated" << std::endl;
-        log(" 🗡️ Enemy eliminated! ");
-        delete Board[endX][endY];  // deleting figure of second team
-        //to eliminate problem from GUI when enemy figure is destroyed
-        Board[endX][endY] = nullptr;
-    }
-
-
-
-    //isKingInCheck(1);
-
-    if( SelectedFigure->showKind() =='K' ){
+    if( SelectedFigure->showKind() =='K' ){ // if no check
 
 
         Figure* PlaceToMove = Board[endX][endY];
@@ -388,6 +410,8 @@ bool Chessboard::moveFigure(int startX, int startY, int endX, int endY) {
             Board[startX][startY] = PlaceBeforeMove;
             Board[endX][endY] = PlaceToMove;
 
+
+
             return false;
         };
 
@@ -399,10 +423,19 @@ bool Chessboard::moveFigure(int startX, int startY, int endX, int endY) {
             Board[startX][startY] = PlaceBeforeMove;
             Board[endX][endY] = PlaceToMove;
 
+
             return false;
         };
 
+
+
+         currentTurn = (currentTurn == 1) ? 2 : 1; //switch the turn --- Kings move problem solved !!!
+
     };
+
+
+
+
     // Alocating figure to new square check checking for white figure
     // Solving problem with potential move due to block the check
 
@@ -415,8 +448,14 @@ bool Chessboard::moveFigure(int startX, int startY, int endX, int endY) {
     int oldKingX = (SelectedFigure->showTeam() == 1) ? whiteKingX : blackKingX;
     int oldKingY = (SelectedFigure->showTeam() == 1) ? whiteKingY : blackKingY;
 
+
+
+
+
     // take the kings position
     checkKingPosition();
+
+
 
     bool stillInCheck = isKingInCheck(SelectedFigure->showTeam());
 
@@ -428,59 +467,124 @@ bool Chessboard::moveFigure(int startX, int startY, int endX, int endY) {
     if (SelectedFigure->showTeam() == 1) {
         whiteKingX = oldKingX;
         whiteKingY = oldKingY;
+
     } else {
         blackKingX = oldKingX;
         blackKingY = oldKingY;
+
+
     }
 
     if (stillInCheck) {
         cout << "Can not move there - King would still be in check!" << endl;
         log("Can not move there - King would still be in check");
+
         return false;
     }
-/*
-    if( isKingInCheck(1) && SelectedFigure->showTeam()== 1){
-        cout<<"can not move there - White King is on check!!!"<<endl;
+/////
 
-        return false;
-    };
+    // attack mode
+    if (Board[endX][endY] != nullptr) {
 
 
-    // Alocating figure to new square check checking for black figures
-
-    if( isKingInCheck(2) && SelectedFigure->showTeam()== 2){
-        cout<<"can not move there - Black King is on check!!!"<<endl;
-
-        return false;
-    };
-*/
-    /*if( SelectedFigure->showKind() =='K' && SelectedFigure->showTeam()!= Board[endX][endY]->isMoveValid()){
-        cout<<"can not move there - Black King would be on check!!!"<<endl;
-
-        return false;
-    };*/
+        checkKingPosition();
 
 
 
 
+
+
+        if (Board[endX][endY]->showKind()=='K'){
+            std::cout << "Be honorable! Can not attack King" << std::endl;
+            log("Be honorable! Can not kill the King ");
+            return false;
+        }
+
+
+        if (Board[endX][endY]->showTeam() == SelectedFigure->showTeam()) {
+            std::cout << "Be honorable! Can not attack your own team" << std::endl;
+            log("Be honorable! Can not attack your own team! ");
+            return false;
+        }
+
+        std::cout << "Enemy" << Board[endX][endY]->showKind() << " eliminated" << std::endl;
+        log(" 🗡️ Enemy eliminated! ");
+
+
+
+        delete Board[endX][endY];  // deleting figure of second team
+        //to eliminate problem from GUI when enemy figure is destroyed
+        Board[endX][endY] = nullptr;
+    }
 
 
     Board[endX][endY] = SelectedFigure;
     Board[startX][startY] = nullptr;  // Assign the nullptr to the old place of moved figure
 
+    //change pawn for Queen after reaching the last line
+    if (SelectedFigure->showKind() == 'P') {
+        if ((SelectedFigure->showTeam() == 1 && endX == 0) ||
+            (SelectedFigure->showTeam() == 2 && endX == 7)) {
+
+            // delete Pawn
+            delete SelectedFigure;
+
+            /*
+            // create a new Queen
+            Board[endX][endY] = new Queen('Q', currentTurn);
+            log("A new Figure on the board!");
+            cout<<"A new Figure on the board!"<<endl;
+            */
+
+            QStringList options;
+            options << "Queen" << "Rook" << "Bishop" << "Knight";
+            bool ok;
+
+
+            QString choice = QInputDialog::getItem(
+                nullptr,
+                "Chose your ally",
+                "Choose a new Figure:",
+                options,
+                0,
+                false,
+                &ok
+                );
+
+            if (!ok || choice.isEmpty()) {
+                choice = "Queen";  // if no choice then Queen
+            }
+
+            // Make a choice with a new figure
+
+
+            if (choice == "Queen") {
+                Board[endX][endY] = new Queen('Q', currentTurn);
+            } else if (choice == "Rook") {
+                Board[endX][endY] = new Rook('R', currentTurn);
+            } else if (choice == "Bishop") {
+                Board[endX][endY] = new Bishop('B', currentTurn);
+            } else if (choice == "Knight") {
+                Board[endX][endY] = new Knight('H', currentTurn);
+            }
+
+        }
+    }
+
+
     std::cout << "Move done: " << SelectedFigure->showKind() << " went (" << endX << ", " << endY << ")" << std::endl;
     log(" 🛡️ Move done");
 
-    isKingInCheck(2);
-    isKingInCheck(1);
+    isKingInCheck(2,true);
+    isKingInCheck(1,true);
     isCheckmate(1);
     isCheckmate(2);
-
 
     // castling mode - when the move is done, switch the bool value
     SelectedFigure->setMove();
 
 
+    currentTurn = (currentTurn == 1) ? 2 : 1; //switch the turn
 
     return true;
 };
