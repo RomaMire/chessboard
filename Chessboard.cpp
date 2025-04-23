@@ -3,6 +3,8 @@
 #include <QRandomGenerator>
 #include <QInputDialog>
 
+#include "FigureCreation.h"
+
 Chessboard::Chessboard(){
     for(int i =0;i<8;i++){
         for(int j=0;j<8;j++){
@@ -559,13 +561,13 @@ bool Chessboard::moveFigure(int startX, int startY, int endX, int endY) {
 
 
             if (choice == "Queen") {
-                Board[endX][endY] = new Queen('Q', currentTurn);
+                  Board[endX][endY] = createFigure<Queen>('Q', currentTurn);
             } else if (choice == "Rook") {
-                Board[endX][endY] = new Rook('R', currentTurn);
+                Board[endX][endY] = createFigure<Rook>('R', currentTurn);
             } else if (choice == "Bishop") {
-                Board[endX][endY] = new Bishop('B', currentTurn);
+                Board[endX][endY] = createFigure<Bishop>('B', currentTurn);
             } else if (choice == "Knight") {
-                Board[endX][endY] = new Knight('H', currentTurn);
+                Board[endX][endY] = createFigure<Knight>('H', currentTurn);
             }
 
         }

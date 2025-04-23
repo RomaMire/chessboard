@@ -17,6 +17,7 @@ SOURCES += \
     Pawn.cpp \
     Queen.cpp \
     Rook.cpp \
+    figurecreation.cpp \
     main.cpp \
     mainwindow.cpp \
     startwindows.cpp
@@ -31,6 +32,7 @@ HEADERS += \
     Pawn.h \
     Queen.h \
     Rook.h \
+    figurecreation.h \
     mainwindow.h \
     startwindows.h
 
