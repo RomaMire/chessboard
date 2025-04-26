@@ -10,7 +10,12 @@
  * as long as the path is not blocked by another piece.
  */
 
-class Rook : public Figure
+/**
+     * @brief "virtaual" was added because of the mltiple inheritane in Queen class
+
+     */
+
+class Rook : public virtual Figure
 
 /**
      * @brief Constructor for the Rook class.
