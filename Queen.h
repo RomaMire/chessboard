@@ -14,23 +14,27 @@
  * and diagonally without limitation in distance, as long as the path is clear.
  */
 
+/*
 
 
-class Queen : public Figure
-{
 
-public:
+//***************************  version with composition
+
+//class Queen : public Figure
+//{
+
+//public:
 
     /**
      * @brief Constructor for the Queen class.
      * @param kind Character representing the type of figure ('Q' for Queen).
      * @param team The team of the queen (1 for white, 2 for black).
      */
-    Queen(char kind, int team) : Figure(kind, team) {}  // Konstruktor królowej
+  //  Queen(char kind, int team) : Figure(kind, team) {}
     /**
      * @brief Destructor for the Queen class.
      */
-    ~Queen() override {}
+    //~Queen() override {}
 
     /**
      * @brief Determines if the queen's move is valid.
@@ -46,7 +50,25 @@ public:
      * @return true if the move is valid, false otherwise.
      */
 
-    bool isMoveValid(int startX, int startY, int endX, int endY, Figure* board[8][8]) override;
+  // bool isMoveValid(int startX, int startY, int endX, int endY, Figure* board[8][8]) override;
+//};
+
+//***************************  version with inheritance
+
+
+class Queen : public Rook, Bishop{
+
+
+public:
+    Queen (char kind, int team);
+
+    ~Queen() override;
+
+
+    bool isMoveValid(int startX, int startY, int endX, int endY, Figure * board[8][8]) override;
+
+
 };
+
 
 #endif // QUEEN_H

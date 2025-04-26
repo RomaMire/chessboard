@@ -11,7 +11,13 @@
  * in a chess game. It inherits from the abstract Figure class.
  */
 
-class Bishop: public Figure
+/**
+     * @brief "virtaual" was added because of the mltiple inheritane in Queen class
+
+     */
+
+
+class Bishop: public virtual Figure
 {
 public:
     /**
